@@ -1,4 +1,5 @@
 var express = require("express");
+var passport = require("passport");
 var router = express.Router();
 var Quote = require("./models/quote.js");
 
@@ -15,7 +16,7 @@ router.get("/quotes", function(req, res){
         
 });
 
-router.post("/quotes", function(req, res) {
+router.post("/quotes", passport.authenticate('basic', { session: false }), function(req, res) {
     if(req.body.quote && req.body.author) {
         var newQuote = new Quote(req.body);
         newQuote.save(function(err, quote) {
@@ -45,7 +46,7 @@ router.get("/quotes/:id", function(req, res) {
     });
 });
 
-router.put("/quotes/:id", function(req,res) {
+router.put("/quotes/:id", passport.authenticate('basic', { session: false }), function(req,res) {
     Quote.findOne({_id: req.params.id}, function(err, quote) {
         if(err)
             res.status(500).json({status: "error", data: null, message: err.message});
@@ -69,7 +70,7 @@ router.put("/quotes/:id", function(req,res) {
     });
 });
 
-router.delete("/quotes/:id", function(req,res) {
+router.delete("/quotes/:id", passport.authenticate('basic', { session: false }), function(req,res) {
     Quote.findOneAndRemove({_id: req.params.id}, function(err) {
         if(err)
             jsonErrorMessage();
