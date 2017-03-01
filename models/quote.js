@@ -2,8 +2,9 @@ var mongoose = require("mongoose");
 //mongoose.connect('mongodb://localhost:27017');
 
 var QuoteScheme = mongoose.Schema( {
-    quote: String,
+    text: String,
     author: String,
+    tags: [String],
     isDaily: {
         type: Boolean,
         default: false
