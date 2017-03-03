@@ -5,14 +5,39 @@ var Quote = require("./models/quote.js");
 
 
 router.get("/quotes", function(req, res){
-    Quote.find({}, function(err,quotes) {
-        if(err) {
-            res.status(500).json({status: "error", data: null, message: err.message});
-        }
-        else {
-            res.status(200).json({status: "success", data: quotes, message: null});
-        }
-    });
+    //if(req.params.author) {
+        //console.log(req.query);
+    //}
+    if(req.query.author) {
+        Quote.find({author: { $regex: new RegExp("^" + req.query.author.toLowerCase(), "i") }}, function(err,quotes) {
+            if(err) {
+                res.status(500).json({status: "error", data: null, message: err.message});
+            }
+            else {
+                res.status(200).json({status: "success", data: quotes, message: null});
+            }
+        });
+    }
+    else if(req.query.tag) {
+        Quote.find({tags: { $regex: new RegExp("^" + req.query.tag.toLowerCase(), "i") }}, function(err,quotes) {
+            if(err) {
+                res.status(500).json({status: "error", data: null, message: err.message});
+            }
+            else {
+                res.status(200).json({status: "success", data: quotes, message: null});
+            }
+        });
+    }
+    else {
+        Quote.find({}, function(err,quotes) {
+            if(err) {
+                res.status(500).json({status: "error", data: null, message: err.message});
+            }
+            else {
+                res.status(200).json({status: "success", data: quotes, message: null});
+            }
+        });
+    }
         
 });
 

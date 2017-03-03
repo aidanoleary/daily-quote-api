@@ -26,6 +26,11 @@ var serverPort = process.env.PORT || 3000;
 var dbString = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 mongoose.connect(dbString);
 
+app.get("/", function(req, res) {
+  res.write("<h1 style='color: red;'>Random Quote App</h1>");
+  res.end();
+});
+
 app.use("/api", apiRouter);
 
 app.listen(serverPort);
