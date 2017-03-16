@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var passport = require("passport");
 var Strategy = require('passport-http').BasicStrategy;
+var cors = require('cors');
 
 var app = express();
 
@@ -12,6 +13,9 @@ app.use(function (req, res, next) {
   console.log(req.body) // populated!
   next()
 })
+
+// Setup cors
+app.use(cors());
 
 passport.use(new Strategy(function(username, password, done) {
   if(username === "user1" && password === "h3ll0w0rld3") {
